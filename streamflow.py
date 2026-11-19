@@ -29,6 +29,7 @@ def plot_streamflow(dates, flows, sites):
 
 def summarize(dates, flows, sites):
     """Print and save maximum, minimum, and average flow for each gauge."""
+    # Excel check for gauge 10163000: max = 131.0 cfs; average = 56.9523611111 cfs.
     header = f"{'Gauge':<10}{'Max (cfs)':>12}   {'Date of max':<19}{'Min (cfs)':>12}{'Avg (cfs)':>12}"
     print(header)
 
