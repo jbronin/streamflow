@@ -1,27 +1,31 @@
-import matplotlib.pyplot as plt
 import numpy as np
+import matplotlib.pyplot as plt
 
-# Simulating Provo River June 2021 Data (Replace with actual CSV parsing as instructed)
-dates_provo = np.arange(1, 31)  # 30 Days in June
-y_1_provo = np.random.randint(200, 400, size=30)
-y_2_provo = np.random.randint(150, 350, size=30)
-y_3_provo = np.random.randint(100, 300, size=30)
-y_4_provo = np.random.randint(50, 250, size=30)
-y_5_provo = np.random.randint(20, 150, size=30)
 
-print("Created simulated arrays for Provo River Streamflow Data.")
+def load_streamflow(filename):
+    """Read the streamflow CSV. Return the dates and a 2D array of flows (cfs), one column per gauge."""
+    data = np.genfromtxt(filename, delimiter=",", skip_header=1, dtype=str, encoding="utf-8")
+    dates = np.array(data[:, 0], dtype="datetime64[m]")
+    flows = data[:, 1:].astype(float)
+    return dates, flows
 
-plt.figure(figsize=(12, 6))
-plt.plot(dates_provo, y_1_provo, label='Site 10163000')
-plt.plot(dates_provo, y_2_provo, label='Site 10155200')
-plt.plot(dates_provo, y_3_provo, label='Site 10155500')
-plt.plot(dates_provo, y_4_provo, label='Site 10154200')
-plt.plot(dates_provo, y_5_provo, label='Site 10155000')
 
-plt.title('Provo River Streamflow Data - June 2021')
-plt.xlabel('Day of June')
-plt.ylabel('Streamflow (cfs)')
-plt.grid(True)
-plt.legend(loc='upper right')
-plt.tight_layout()
-plt.show()
+def plot_streamflow(dates, flows, sites):
+    """Plot the flow at each gauge, with the same title, labels, and formatting as the Matplotlib HW."""
+    plt.figure(figsize=(12, 6))
+    for column, site in enumerate(sites):
+        plt.plot(dates, flows[:, column], label=f"Site {site}")
+
+    plt.title("Provo River Streamflow Data - June 2021")
+    plt.xlabel("Day of June")
+    plt.ylabel("Streamflow (cfs)")
+    plt.grid(True)
+    plt.legend(loc="upper right")
+    plt.tight_layout()
+    plt.show()
+
+
+# Main program
+sites = ["10163000", "10155200", "10155500", "10154200", "10155000"]
+dates, flows = load_streamflow("June-2021-Provo-River-Streamflow-Rates.csv")
+plot_streamflow(dates, flows, sites)
